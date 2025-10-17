@@ -66,9 +66,7 @@ const seed = ({ topicData, userData, articleData, commentData }) => {
         return db.query(getArticleID);
       })
   .then(({ rows }) => {
-    console.log(rows);
   const lookupObj = createLookupObj(rows, 'title', 'article_id');
-
   commentData = commentData.map((comment) => {
       return [
       lookupObj[comment.article_title],
@@ -78,10 +76,8 @@ const seed = ({ topicData, userData, articleData, commentData }) => {
       new Date(comment.created_at)      
       ];  
   });
-   const commentsInsertStr = format(`INSERT INTO comments (article_id, body, votes, author, created_at) VALUES %L;`, commentData);
-   
+   const commentsInsertStr = format(`INSERT INTO comments (article_id, body, votes, author, created_at) VALUES %L;`, commentData);   
     return db.query(commentsInsertStr);
-
 });
 
   
