@@ -6,12 +6,13 @@ exports.convertTimestampToDate = ({ created_at, ...otherProperties }) => {
 };
 
 exports.createLookupObj = (arr, key, value) => {
-  if(!arr || arr.length === 0){
+  if(!arr || arr.length === 0 || key.trim().length ===0 || value.trim().length ===0){
     return {}
   }
   const lookUpObj = {}
+  const copyArr = [...arr];
 
-  arr.forEach((object) => {
+  copyArr.forEach((object) => {
     const lookupKey = object[key]
     const lookupValue = object[value];
 

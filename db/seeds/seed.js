@@ -66,6 +66,7 @@ const seed = ({ topicData, userData, articleData, commentData }) => {
         return db.query(getArticleID);
       })
   .then(({ rows }) => {
+    console.log(rows);
   const lookupObj = createLookupObj(rows, 'title', 'article_id');
 
   commentData = commentData.map((comment) => {

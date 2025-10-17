@@ -43,9 +43,46 @@ describe("convertTimestampToDate", () => {
     expect(output).toEqual({});
   });
   test("returns an object containing a single property, with the key-value matching the respective strings, when passing two strings alongside an array of single object", () => {
-    const testArray = []
+    const testArray = [{
+    article_id : 18,
+    title: "The People Tracking Every Touch, Pass And Tackle in the World Cup", }]
     const output = createLookupObj(testArray, 'title', 'article_id');
+    expect(output).toEqual({"The People Tracking Every Touch, Pass And Tackle in the World Cup" : 18});
+  });
+  test("returns an object containing multiple properties, with the key-value matching the respective strings, when passing two strings alongside an array of multiple objects", () => {
+    const testArray =  [
+        { article_id: 1, title: 'Living in the shadow of a great man' },
+        { article_id: 2, title: 'Sony Vaio; or, The Laptop' },
+        { article_id: 3, title: 'Eight pug gifs that remind me of mitch' }]
+    const output = createLookupObj(testArray, 'title', 'article_id');
+    expect(output).toEqual({'Living in the shadow of a great man' : 1,
+                            'Sony Vaio; or, The Laptop'  : 2, 
+                            'Eight pug gifs that remind me of mitch':3});
+  });
+   test("returns an empty object, when passing two empty strings alongside an array of mnultiple objects", () => {
+    const testArray =  [
+        { article_id: 1, title: 'Living in the shadow of a great man' },
+        { article_id: 2, title: 'Sony Vaio; or, The Laptop' },
+        { article_id: 3, title: 'Eight pug gifs that remind me of mitch' }]
+    const output = createLookupObj(testArray, '', '');
     expect(output).toEqual({});
+  });
+  test("returns an empty object, when passing two strings with white spaces alongside an array of mnultiple objects", () => {
+    const testArray =  [
+        { article_id: 1, title: 'Living in the shadow of a great man' },
+        { article_id: 2, title: 'Sony Vaio; or, The Laptop' },
+        { article_id: 3, title: 'Eight pug gifs that remind me of mitch' }]
+    const output = createLookupObj(testArray, '  ', '  ');
+    expect(output).toEqual({});
+  });
+  test("returns an object containing multiple properties, with the key-value matching the respective strings, when passing two strings alongside an array of multiple objects without mutation of the original array", () => {
+    const testArray =  [
+        { article_id: 1, title: 'Living in the shadow of a great man' },
+        { article_id: 2, title: 'Sony Vaio; or, The Laptop' },
+        { article_id: 3, title: 'Eight pug gifs that remind me of mitch' }]
+    const copyTestArray = [...testArray];    
+    createLookupObj(testArray, 'title', 'article_id');
+    expect(copyTestArray).toEqual(testArray);
   });
 });
 
