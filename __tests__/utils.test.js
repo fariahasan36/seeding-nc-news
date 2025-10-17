@@ -1,5 +1,6 @@
 const {
-  convertTimestampToDate
+  convertTimestampToDate,
+  createLookupObj
 } = require("../db/seeds/utils");
 
 describe("convertTimestampToDate", () => {
@@ -35,6 +36,16 @@ describe("convertTimestampToDate", () => {
     const result = convertTimestampToDate(input);
     const expected = { key: "value" };
     expect(result).toEqual(expected);
+  });
+  test("returns an empty array when passed an empty array", () => {
+    const testArray = []
+    const output = createLookupObj(testArray, 'title', 'article_id');
+    expect(output).toEqual({});
+  });
+  test("returns an object containing a single property, with the key-value matching the respective strings, when passing two strings alongside an array of single object", () => {
+    const testArray = []
+    const output = createLookupObj(testArray, 'title', 'article_id');
+    expect(output).toEqual({});
   });
 });
 
