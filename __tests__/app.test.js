@@ -13,7 +13,7 @@ afterAll(() => {
 });
 
 describe("Get /api/topics", ()=>{
-    test("200: responds with requested get all data from topics", () =>{
+    test("200: Responds with the requested topics object containing an array of all the topics", () =>{
         return request(app)
         .get("/api/topics")
         .expect(200)
@@ -27,7 +27,7 @@ describe("Get /api/topics", ()=>{
 })
 
 describe("Get /api/articles", ()=>{
-    test("200: responds with requested get all data from ariticles by counting the total comments", () =>{
+    test("200: Responds with the requested articles object containing an array of articles by counting the total number of comments", () =>{
         return request(app)
         .get("/api/articles")
         .expect(200)
@@ -41,5 +41,21 @@ describe("Get /api/articles", ()=>{
         })
     })
 })
+
+describe("Get /api/users", ()=>{
+    test("200: Responds with the requested users object by containing an array of all the users", () =>{
+        return request(app)
+        .get("/api/users")
+        .expect(200)
+        .then(({body})=>{
+            const { username, name, avatar_url } = body.users[0]
+            expect(typeof username).toBe("string")
+            expect(typeof name).toBe("string")
+            expect(typeof avatar_url).toBe("string")
+
+        })
+    })
+})
+
 
 
