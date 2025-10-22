@@ -57,5 +57,39 @@ describe("Get /api/users", ()=>{
     })
 })
 
+describe("Get /api/articles/:article_id", ()=>{
+    test("200: Responds an object with the key of article and the value of an article object", () =>{
+        return request(app)
+        .get("/api/articles/9")
+        .expect(200)
+        .then(({body})=>{
+            const { author, title, article_id, article_body, topic, created_at, votes, article_img_url } = body.article
+            expect(typeof author).toBe("string")
+            expect(typeof article_id).toBe("number")
+            expect(typeof votes).toBe("number")
+            expect(article_id).toBe(9)
+        })
+    })
+   
+    test("404: Responds an error message with the error code 404 when id is not found", () =>{
+        return request(app)
+        .get("/api/articles/999")
+        .expect(404)
+        .then(({body})=>{
+            const { message } = body
+            return expect(message).toBe("Article not found")
+        })
+    })
+     test("400: Responds an error message with the error code 400 when id is not valid", () =>{
+        return request(app)
+        .get("/api/articles/mnb")
+        .expect(400)
+        .then(({body})=>{
+            const { message } = body
+            return expect(message).toBe("Invalid article id")
+        })
+    })
+})
+
 
 
