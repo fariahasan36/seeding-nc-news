@@ -1,18 +1,10 @@
-const db = require('./db/connection.js')
 const express = require('express')
 const app = express()
+const { getTopics, getHello } = require('./controllers/topics.js')
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+app.get('/', getHello)
 
-app.get('/api/topics', (req, res) => {
-    return db.query(`Select slug, description from topics`)
-    .then(({rows}) =>{
-         res.status(200).send({topics: rows})
-    })
-   
-})
+app.get('/api/topics', getTopics)
 
 module.exports = app
 
