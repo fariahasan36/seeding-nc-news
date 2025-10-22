@@ -8,7 +8,6 @@ function readArticles() {
 }
 
 function readArticlesById(id){
-    console.log(id)
     return db.query(`Select author, title, article_id, body as article_body, topic, created_at, votes, article_img_url
         from articles where article_id = $1`, [id])
 }

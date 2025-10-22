@@ -10,7 +10,6 @@ const getArticleById = (req, res) => {
     const { article_id } = req.params
 
     const id = parseInt(article_id);
-    console.log(id)
 
     if(!id){
         return res.status(400).send({message: "Invalid article id"})
@@ -27,4 +26,10 @@ const getArticleById = (req, res) => {
     })
 }
 
-module.exports = { getArticles, getArticleById }
+const getAllCommnetsByArticleId = (req, res) => {
+    const { article_id } = req.params
+
+
+}
+
+module.exports = { getArticles, getArticleById, getAllCommnetsByArticleId }

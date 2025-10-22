@@ -91,5 +91,40 @@ describe("Get /api/articles/:article_id", ()=>{
     })
 })
 
+describe("Get /api/articles/:article_id/comments", ()=>{
+    test("200: Responds an object with the key of comments and the value of an array of comments for the given article id", () =>{
+        return request(app)
+        .get("/api/articles/1/comments")
+        .expect(200)
+        .then(({body})=>{
+            const { votes, author, comment_body, article_id } = body.comments[0]
+            expect(typeof comment_body).toBe("string")
+            expect(typeof author).toBe("string")
+            expect(typeof article_id).toBe("number")
+            expect(typeof votes).toBe("number")
+            expect(article_id).toBe(1)
+        })
+    })
+   
+    test("404: Responds an error message with the error code 404 when article id is not found", () =>{
+        return request(app)
+        .get("/api/articles/999/comments")
+        .expect(404)
+        .then(({body})=>{
+            const { message } = body
+            return expect(message).toBe("Comments not found")
+        })
+    })
+     test("400: Responds an error message with the error code 400 when article id is not valid", () =>{
+        return request(app)
+        .get("/api/articles/mnb/comments")
+        .expect(400)
+        .then(({body})=>{
+            const { message } = body
+            return expect(message).toBe("Invalid article id")
+        })
+    })
+})
+
 
 
