@@ -26,3 +26,20 @@ describe("Get /api/topics", ()=>{
     })
 })
 
+describe("Get /api/articles", ()=>{
+    test("200: responds with requested get all data from ariticles by counting the total comments", () =>{
+        return request(app)
+        .get("/api/articles")
+        .expect(200)
+        .then(({body})=>{
+            const { topic, created_at, votes, article_img_url } = body.articles[0]
+            expect(typeof article_img_url).toBe("string")
+            expect(typeof votes).toBe("number")
+            expect(typeof created_at).toBe("string")
+            expect(typeof topic).toBe("string")
+
+        })
+    })
+})
+
+
