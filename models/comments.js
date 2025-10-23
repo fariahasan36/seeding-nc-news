@@ -5,8 +5,11 @@ function readCommentsByArticleId (articleId) {
 }
 
 function createCommentByArticleId(articleId, commentObj) {
-    return db.query(`Insert into comments (article_id, author, body) values ($1, $2, $3)`,
+    return db.query(`Insert into comments (article_id, author, body) values ($1, $2, $3) returning article_id, author as username, body as comment_body`,
          [articleId, commentObj.username, commentObj.body])
+         .then(({rows}) =>{
+            return rows[0]
+         })
 }
 
 module.exports = { readCommentsByArticleId, createCommentByArticleId }
