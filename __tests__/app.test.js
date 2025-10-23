@@ -86,7 +86,7 @@ describe("Get /api/articles/:article_id", ()=>{
         .expect(400)
         .then(({body})=>{
             const { message } = body
-            return expect(message).toBe("Invalid article id")
+            return expect(message).toBe("Invalid input")
         })
     })
 })
@@ -121,7 +121,7 @@ describe("Get /api/articles/:article_id/comments", ()=>{
         .expect(400)
         .then(({body})=>{
             const { message } = body
-            return expect(message).toBe("Invalid article id")
+            return expect(message).toBe("Invalid input")
         })
     })
 })

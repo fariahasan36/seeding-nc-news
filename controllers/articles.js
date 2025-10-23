@@ -6,23 +6,21 @@ const getArticles = (req, res) => {
     })
 }
 
-const getArticleById = (req, res) => {
+const getArticleById = (req, res, next) => {
     const { article_id } = req.params
 
     const id = parseInt(article_id);
 
-    if(!id){
-        return res.status(400).send({message: "Invalid article id"})
-    }
     readArticlesById(id)
-    .then(({rows}) => {
-       
+    .then(({rows}) => {       
         if(rows.length === 0){
-            return res.status(404).send({message: "Article not found"})
+            return Promise.reject({status: 404, message: "Article not found"})
         } else {
             res.status(200).send({article: rows[0]})
-        }
-       
+        }       
+    })
+    .catch((err) => {
+        next(err)
     })
 }
 
