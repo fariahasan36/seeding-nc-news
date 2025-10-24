@@ -15,4 +15,20 @@ function createCommentByArticleId(articleId, commentObj) {
          })
 }
 
-module.exports = { readCommentsByArticleId, createCommentByArticleId }
+function deleteCommentById(id) {
+    return db.query(`Delete from comments where comment_id = $1`, [id])
+}
+
+function getCommentById(id) {
+    console.log(id)
+    return db.query(`Select * from comments where comment_id = $1`, [id])
+    .then(({rows}) => {
+        if(rows.length===0){
+            return Promise.reject({status: 404, message: "Comment not found"})
+        } else {
+            return rows
+        }
+    })
+}
+
+module.exports = { readCommentsByArticleId, createCommentByArticleId, deleteCommentById, getCommentById }

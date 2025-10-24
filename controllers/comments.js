@@ -1,4 +1,4 @@
-const { readCommentsByArticleId, createCommentByArticleId } = require('../models/comments.js')
+const { readCommentsByArticleId, createCommentByArticleId, deleteCommentById, getCommentById } = require('../models/comments.js')
 
 const getAllCommnetsByArticleId = (req, res, next) => {
     const { article_id } = req.params
@@ -31,9 +31,26 @@ const postCommentByArticleId = (req, res, next) => {
         }        
     })
     .catch((err) => {
-        console.log(err)
         next(err)
     })
 }
 
-module.exports = { getAllCommnetsByArticleId, postCommentByArticleId }
+const deleteCommentByCommentId = (req, res, next) => {
+    const { comment_id } = req.params
+
+    const requestPromises = [getCommentById(comment_id)]
+    
+    if(comment_id) {
+        requestPromises.push(deleteCommentById(comment_id))
+    }
+    
+    return Promise.all(requestPromises)
+        .then(() => {
+            res.status(204).send()
+        })   
+        .catch((err) =>{
+            next(err)
+        })
+}
+
+module.exports = { getAllCommnetsByArticleId, postCommentByArticleId, deleteCommentByCommentId }

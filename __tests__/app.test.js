@@ -253,7 +253,31 @@ describe("Patch /api/articles/3", ()=>{
             expect(message).toBe("Article not updated");
         })
     })
-
+})
+describe("Delete /api/comments/5", ()=>{
+    test("204: Responds a status 204 and no content when the given comment id exists", () =>{
+        return request(app)
+        .delete("/api/comments/6")
+        .expect(204)
+    })
+    test("400: Responds a 400 when the given comment id is not valid", () =>{
+        return request(app)
+        .delete("/api/comments/abcd")
+        .expect(400)
+        .then(({body})=>{
+             const { message } = body
+            return expect(message).toBe("Invalid input")         
+        })
+    })
+    test("404: Responds a 404 when the given comment id does not exists in database", () =>{
+        return request(app)
+        .delete("/api/comments/555")
+        .expect(404)
+        .then(({body})=>{
+             const { message } = body
+            return expect(message).toBe("Comment not found")         
+        })
+    })
 })
 
 
