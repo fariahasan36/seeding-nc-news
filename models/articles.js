@@ -7,9 +7,16 @@ function readArticles() {
         group by articles.article_id order by articles.created_at desc`)
 }
 
-function readArticlesById(id){
+function readArticlesById(id) {
     return db.query(`Select author, title, article_id, body as article_body, topic, created_at, votes, article_img_url
         from articles where article_id = $1`, [id])
 }
 
-module.exports = { readArticles, readArticlesById };
+function updateArticleById(id, articleObj) {
+    if(Object.keys(articleObj).length === 0){
+        return Promise.reject({status: 404, message: "Article not updated"})
+    }
+    return db.query(`UPDATE articles SET votes = $1 WHERE article_id = $2 returning *;`, [articleObj.inc_votes, id])
+}
+
+module.exports = { readArticles, readArticlesById, updateArticleById };

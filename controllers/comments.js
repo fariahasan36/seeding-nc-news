@@ -28,8 +28,7 @@ const postCommentByArticleId = (req, res, next) => {
             return Promise.reject({status: 404, message: "Comment not added"})
         } else {
             res.status(200).send({ comment: newComment })
-        }
-        
+        }        
     })
     .catch((err) => {
         console.log(err)

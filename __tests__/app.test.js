@@ -150,11 +150,11 @@ describe("Post /api/articles/:article_id/comments", ()=>{
         .send(comment)
         .expect(200)
         .then(({body})=>{
-            // const { username, comment_body, article_id } = body.comment
-            // expect(typeof username).toBe("string")
-            // expect(typeof article_id).toBe("number")
-            // expect(typeof comment_body).toBe("string")
-            // expect(article_id).toBe(3)
+            const { username, comment_body, article_id } = body.comment
+            expect(typeof username).toBe("string")
+            expect(typeof article_id).toBe("number")
+            expect(typeof comment_body).toBe("string")
+            expect(article_id).toBe(3)
         })
     })
     test("400: Responds an error message with the error code 400 when article id is not exists", () =>{
@@ -185,6 +185,75 @@ describe("Post /api/articles/:article_id/comments", ()=>{
             return expect(message).toBe("Invalid input")
         })
     })
+    test("404: Responds with an error message when the comment could not be added", () => {
+    const comment = {}; 
+
+    return request(app)
+        .post("/api/articles/1/comments") 
+        .send(comment)
+        .expect(404)
+        .then(({ body }) => {
+            const { message } = body;
+            expect(message).toBe("Comment not added");
+        });
+    });
+})
+
+describe("Patch /api/articles/3", ()=>{
+    test("200: Responds an updated article object with the key of article of the given article id", () =>{
+        const article = { inc_votes: 100 }
+
+        return request(app)
+        .patch("/api/articles/3")
+        .send(article)
+        .expect(200)
+        .then(({body})=>{
+            const { author, title, article_id, topic, created_at, votes, article_img_url } = body.article
+            expect(typeof author).toBe("string")
+            expect(typeof article_id).toBe("number")
+            expect(typeof votes).toBe("number")
+            expect(article_id).toBe(3)
+            expect(votes).toBe(100)
+            expect(title).toBe("Eight pug gifs that remind me of mitch")
+        })
+    })
+    test("400: Responds an error message with the error code 400 when article id is not valid", () =>{
+        const article = { inc_votes: 100 }
+
+        return request(app)
+        .patch("/api/articles/abc")
+        .send(article)
+        .expect(400)
+        .then(({body})=>{
+            const { message } = body
+            return expect(message).toBe("Invalid input")
+        })
+    })
+    test("404: Responds an error message when article id does not exists", () =>{
+        const article = { inc_votes: 100 }
+
+        return request(app)
+        .patch("/api/articles/999")
+        .send(article)
+        .expect(404)
+        .then(({body})=>{
+           const { message } = body;
+            expect(message).toBe("Article not updated");
+        })
+    })
+    test("404: Responds an error message when article could not updated", () =>{
+        const article = { }
+
+        return request(app)
+        .patch("/api/articles/3")
+        .send(article)
+        .expect(404)
+        .then(({body})=>{
+           const { message } = body;
+            expect(message).toBe("Article not updated");
+        })
+    })
+
 })
 
 

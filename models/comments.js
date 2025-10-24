@@ -5,6 +5,9 @@ function readCommentsByArticleId (articleId) {
 }
 
 function createCommentByArticleId(articleId, commentObj) {
+    if(Object.keys(commentObj).length === 0){
+        return Promise.reject({status: 404, message: "Comment not added"})
+    }
     return db.query(`Insert into comments (article_id, author, body) values ($1, $2, $3) returning article_id, author as username, body as comment_body`,
          [articleId, commentObj.username, commentObj.body])
          .then(({rows}) =>{

@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 const { getTopics, getHello } = require('./controllers/topics.js')
-const { getArticles, getArticleById,  } = require('./controllers/articles.js')
+const { getArticles, getArticleById, patchArticleByArticleId } = require('./controllers/articles.js')
 const { getAllCommnetsByArticleId, postCommentByArticleId } = require('./controllers/comments.js')
 const { getUsers } = require('./controllers/users.js')
 
@@ -21,6 +21,8 @@ app.get('/api/articles/:article_id/comments', getAllCommnetsByArticleId)
 
 app.post('/api/articles/:article_id/comments', postCommentByArticleId)
 
+app.patch('/api/articles/:article_id', patchArticleByArticleId)
+
 app.use((err, req, res, next) => {
   if (err.status) {
     res.status(err.status).send({ message: err.message });
@@ -32,7 +34,10 @@ app.use((err, req, res, next) => {
     res.status(400).send({ message: "Invalid input" });
   } else if (err.code === "23503") {
     res.status(400).send({ message: "Reference does not exist" });
-  } else next(err);
+  } 
+  else if(err.code === "23502") {
+    res.status(400).send({message: "Missing required fields"})
+  }else next(err);
 });
 
 app.use((err, req, res, next) => {
