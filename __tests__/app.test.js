@@ -3,6 +3,7 @@ const seed = require("../db/seeds/seed");
 const data = require("../db/data/test-data");
 const request = require("supertest");
 const app = require("../app.js");
+require('jest-sorted')
 
 beforeEach(() => {
   return seed(data);
@@ -39,14 +40,47 @@ describe("Get /api/articles", ()=>{
             expect(articles).toBeInstanceOf(Array)
             expect(articles).toHaveLength(data.articleData.length)
             expect(articles.length>0)
+
             articles.forEach((article) => {
-                expect(typeof article.article_img_url).toBe("string")
-                expect(typeof article.votes).toBe("number")
-                expect(typeof article.created_at).toBe("string")
-                expect(typeof article.topic).toBe("string")
+                expect(article).toEqual(
+                    expect.objectContaining({
+                        article_img_url : expect.any(String),
+                        votes : expect.any(Number),
+                        created_at : expect.any(String),
+                        topic : expect.any(String)
+                    })
+                )
             })         
 
         })
+    })
+    test("200: Responds with the requested articles object containing an array of articles by sorting created date desc", () => {
+        const validColumns = ["created_at", "votes"]
+        return Promise.all(
+            validColumns.map((sort_col) => {
+                return request(app)
+                .get("/api/articles")
+                .query({ sort_by: sort_col, order: "DESC" })
+                .expect(200)
+                .then((res) => {
+                    expect(res.body.articles).toBeInstanceOf(Array);
+                    expect(res.body.articles.length).toBeGreaterThan(0);
+                    expect(res.body.articles).toBeSortedBy(sort_col, { descending: true });
+            });
+        }))
+    })
+    test("404: Responds a 404 when the request accepts invalid queries", () =>{
+        const inValidColumns = ["not_a_valid_column"]
+        return Promise.all(
+            inValidColumns.map((sort_col) => {
+                return request(app)
+                .get("/api/articles")
+                .query({ sort_by: sort_col, order: "invalid" })
+                .expect(404)
+                .then((res) => {
+                    expect(res.body.message).toBe("Invalid input");
+                })
+        }))
     })
 })
 

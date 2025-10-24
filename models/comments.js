@@ -20,7 +20,6 @@ function deleteCommentById(id) {
 }
 
 function getCommentById(id) {
-    console.log(id)
     return db.query(`Select * from comments where comment_id = $1`, [id])
     .then(({rows}) => {
         if(rows.length===0){

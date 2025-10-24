@@ -1,10 +1,20 @@
 const db = require('../db/connection.js')
 
-function readArticles() {
-    return db.query(`Select articles.article_id, articles.author, articles.title, articles.topic, 
+function readArticles({ sort_by = "created_at", order = "DESC" }) {
+    const validSortColumns = ["created_at", "votes"];
+    const validOrderOptions = ["ASC", "DESC"];
+console.log(sort_by)
+console.log(order)
+
+    if(!validSortColumns.includes(sort_by) || !validOrderOptions.includes(order)){
+        return Promise.reject({status: 404, message: "Invalid input"})
+    }
+    const query = `Select articles.article_id, articles.author, articles.title, articles.topic, 
         articles.created_at, articles.votes, articles.article_img_url, count(comments.comment_id) as comment_count
         from articles left join comments on comments.article_id = articles.article_id
-        group by articles.article_id order by articles.created_at desc`)
+        group by articles.article_id ORDER BY ${sort_by} ${order}`
+
+    return db.query(query)
 }
 
 function readArticlesById(id) {
