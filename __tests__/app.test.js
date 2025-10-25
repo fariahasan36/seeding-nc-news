@@ -32,7 +32,7 @@ describe("Get /api/topics", ()=>{
 })
 
 describe("Get /api/articles", ()=>{
-    test("200: Responds with the requested articles object containing an array of articles by counting the total number of comments", () =>{
+    test("200: Responds with a key of articles object containing an array of article objects by counting the total number of comments", () =>{
         return request(app)
         .get("/api/articles")
         .expect(200)
@@ -54,7 +54,7 @@ describe("Get /api/articles", ()=>{
 
         })
     })
-    test("200: Responds with the requested articles object containing an array of articles by sorting created date desc", () => {
+    test("200: Responds with a key of articles object containing an array of articles objects by sorting created date desc", () => {
         const validColumns = ["created_at", "votes"]
         return Promise.all(
             validColumns.map((sort_col) => {
@@ -69,14 +69,51 @@ describe("Get /api/articles", ()=>{
             });
         }))
     })
-    test("404: Responds a 404 when the request accepts invalid queries", () =>{
+    test("200: Responds by filtering the articles by the topic value specified in the query", () => {
+       
+        return request(app)
+            .get("/api/articles")
+            .query({ topic: "mitch" })
+            .expect(200)
+            .then((res) => {
+                expect(res.body.articles).toBeInstanceOf(Array);
+                expect(res.body.articles.length).toBeGreaterThan(0);
+                res.body.articles.forEach((article) => {
+                    expect(article.topic).toBe("mitch")
+                })
+            });
+       
+    })
+    test("400: Responds an error message when topic is not valid type", () => {
+       
+        return request(app)
+            .get("/api/articles")
+            .query({ topic: 99999 })
+            .expect(400)
+            .then((res) => {
+                expect(res.body.message).toBe("Invalid input");
+            });
+       
+    })
+    test("404: Responds an error message when topic is not present in database", () => {
+       
+        return request(app)
+            .get("/api/articles")
+            .query({ topic: "not-mitch" })
+            .expect(404)
+            .then((res) => {
+                expect(res.body.message).toBe("Articles not found");
+            });
+       
+    })
+    test("400: Responds a 404 when the request accepts invalid queries", () =>{
         const inValidColumns = ["not_a_valid_column"]
         return Promise.all(
             inValidColumns.map((sort_col) => {
                 return request(app)
                 .get("/api/articles")
                 .query({ sort_by: sort_col, order: "invalid" })
-                .expect(404)
+                .expect(400)
                 .then((res) => {
                     expect(res.body.message).toBe("Invalid input");
                 })

@@ -4,7 +4,12 @@ const getArticles = (req, res) => {
     const queries = req.query
     return readArticles(queries)
         .then(({rows}) => {
-            res.status(200).send({ articles : rows })
+            if(rows.length===0){
+                return Promise.reject({status: 404, message: "Articles not found"})
+            } else {
+                res.status(200).send({ articles : rows })
+            }
+            
     })
 }
 
