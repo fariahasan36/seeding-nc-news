@@ -22,12 +22,10 @@ function deleteCommentById(id) {
 function getCommentById(id) {
     return db.query(`Select * from comments where comment_id = $1`, [id])
     .then(({rows}) => {
-        if(rows.length===0){
+        if(rows.length===0) {
             return Promise.reject({status: 404, message: "Comment not found"})
-        } else {
-            return rows
         }
-    })
+    })            
 }
 
 module.exports = { readCommentsByArticleId, createCommentByArticleId, deleteCommentById, getCommentById }

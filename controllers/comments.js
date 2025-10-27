@@ -27,21 +27,23 @@ const postCommentByArticleId = (req, res) => {
             res.status(200).send({ comment: newComment })
         }        
     })
+
 }
 
-const deleteCommentByCommentId = (req, res) => {
+const deleteCommentByCommentId = (req, res, next) => {
     const { comment_id } = req.params
 
-    const requestPromises = [getCommentById(comment_id)]
-    
-    if(comment_id) {
-        requestPromises.push(deleteCommentById(comment_id))
+    if(!/^[0-9]+$/.test(comment_id)){
+        return res.status(400).send({message:"Invalid input"})
     }
-    
-    return Promise.all(requestPromises)
-        .then(() => {
-            res.status(204).send()
-        })   
+    getCommentById(comment_id)
+    .then(() => {
+      return deleteCommentById(comment_id);
+    })
+    .then(()=>{
+        res.status(204).send();
+    })
+    .catch(next);
 }
 
 module.exports = { getAllCommnetsByArticleId, postCommentByArticleId, deleteCommentByCommentId }

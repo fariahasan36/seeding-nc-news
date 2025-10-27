@@ -282,7 +282,7 @@ describe("Post /api/articles/:article_id/comments", ()=>{
     });
 })
 
-describe("Patch /api/articles/3", ()=>{
+describe("Patch /api/articles/:article_id", ()=>{
     test("200: Responds an updated article object with the key of article of the given article id", () =>{
         const article = { inc_votes: 100 }
 
@@ -337,7 +337,7 @@ describe("Patch /api/articles/3", ()=>{
         })
     })
 })
-describe("Delete /api/comments/5", ()=>{
+describe("Delete /api/comments/:comment_id", ()=>{
     test("204: Responds a status 204 and no content when the given comment id exists", () =>{
         return request(app)
         .delete("/api/comments/6")
