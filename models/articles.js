@@ -33,7 +33,7 @@ function updateArticleById(id, articleObj) {
     if(Object.keys(articleObj).length === 0){
         return Promise.reject({status: 404, message: "Article not updated"})
     }
-    return db.query(`UPDATE articles SET votes = $1 WHERE article_id = $2 returning *;`, [articleObj.inc_votes, id])
+    return db.query(`UPDATE articles SET votes = votes + $1 WHERE article_id = $2 returning *;`, [articleObj.inc_votes, id])
 }
 
 module.exports = { readArticles, readArticlesById, updateArticleById };
