@@ -24,6 +24,15 @@ function readArticles({ sort_by = "created_at", order = "DESC", topic}) {
     return db.query(query, queryValue)
 }
 
+function checkArticleExists(articleId){
+    return db.query(`Select * from articles where article_id=$1`, [articleId])
+    .then(({rows}) => {
+        if(rows.length === 0){
+            return Promise.reject({status: 404, message: "Article Not found"})
+        } 
+    })
+}
+
 function readArticlesById(id) {
     return db.query(`Select articles.author, articles.title, articles.article_id, articles.body as article_body, articles.topic, articles.created_at, articles.votes, articles.article_img_url, count(comments.comment_id)::int as comment_count
         from articles left join comments on comments.article_id = articles.article_id where articles.article_id = $1 GROUP BY articles.article_id;`, [id])
@@ -36,4 +45,4 @@ function updateArticleById(id, articleObj) {
     return db.query(`UPDATE articles SET votes = votes + $1 WHERE article_id = $2 returning *;`, [articleObj.inc_votes, id])
 }
 
-module.exports = { readArticles, readArticlesById, updateArticleById };
+module.exports = { readArticles, readArticlesById, updateArticleById, checkArticleExists };

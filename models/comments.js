@@ -1,7 +1,16 @@
 const db = require('../db/connection.js')
 
 function readCommentsByArticleId (articleId) {
-    return db.query(`Select comment_id, votes, created_at, author, body as comment_body, article_id from comments where article_id = $1 order by created_at desc`,  [articleId])
+    let queryStr = `Select comment_id, votes, created_at, author, body as comment_body, article_id from comments`
+    const queryVals = []
+    if(articleId){
+        queryStr += ` where article_id = $1 order by created_at desc`
+        queryVals.push(articleId)
+    }
+    return db.query(queryStr,  queryVals)
+    .then(({rows})=>{
+        return rows
+    })
 }
 
 function createCommentByArticleId(articleId, commentObj) {

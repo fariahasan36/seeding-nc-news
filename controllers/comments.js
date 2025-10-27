@@ -1,18 +1,19 @@
 const { readCommentsByArticleId, createCommentByArticleId, deleteCommentById, getCommentById } = require('../models/comments.js')
+const { checkArticleExists } = require("../models/articles.js")
 
-const getAllCommnetsByArticleId = (req, res) => {
+const getAllCommnetsByArticleId = (req, res, next) => {
     const { article_id } = req.params
 
-    const id = parseInt(article_id);
+    const requestPromises = [readCommentsByArticleId(article_id)]    
 
-    return readCommentsByArticleId(id)
-    .then(({rows}) => {
-        if(rows.length === 0){
-            return Promise.reject({status: 404, message: "Comments not found"})
-        } else {
-            res.status(200).send({ comments : rows })
-        }
+    if(article_id){
+        requestPromises.push(checkArticleExists(article_id))
+    }
+    return Promise.all(requestPromises)
+    .then((results) => {
+        res.status(200).send({ comments : results[0] })        
     })
+    .catch(next)
 }
 
 const postCommentByArticleId = (req, res) => {

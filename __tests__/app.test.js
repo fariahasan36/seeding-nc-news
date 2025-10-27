@@ -208,7 +208,7 @@ describe("Get /api/articles/:article_id/comments", ()=>{
         .expect(404)
         .then(({body})=>{
             const { message } = body
-            return expect(message).toBe("Comments not found")
+            return expect(message).toBe("Article Not found")
         })
     })
      test("400: Responds an error message with the error code 400 when article id is not valid", () =>{
