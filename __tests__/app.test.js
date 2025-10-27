@@ -13,6 +13,17 @@ afterAll(() => {
   return db.end();
 });
 
+describe("Any endpoint", () =>{
+    test("404: Responds an error message when the endpoint does not exists", ()=>{
+        return request(app)
+        .get("/any-invalid-path")
+        .expect(404)
+        .then(({body})=>{
+            expect(body.message).toBe("Path not found")
+        })
+    })
+})
+
 describe("Get /api/topics", ()=>{
     test("200: Responds with the requested topics object containing an array of all the topics", () =>{
         return request(app)

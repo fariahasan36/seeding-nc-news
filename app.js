@@ -29,6 +29,10 @@ app.patch('/api/articles/:article_id', patchArticleByArticleId)
 
 app.delete('/api/comments/:comment_id', deleteCommentByCommentId)
 
+app.use((req, res) => {
+  res.status(404).send({message: 'Path not found'})
+})
+
 app.use(handlePsqlErrors);
 
 app.use(handleCustomErrors);
