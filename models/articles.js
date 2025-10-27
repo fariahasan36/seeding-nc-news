@@ -3,7 +3,7 @@ const db = require('../db/connection.js')
 function readArticles({ sort_by = "created_at", order = "DESC", topic}) {
     const validSortColumns = ["created_at", "votes"];
     const validOrderOptions = ["ASC", "DESC"];
-    console.log(typeof topic)
+    
     const queryValue = []
     if(!validSortColumns.includes(sort_by) || !validOrderOptions.includes(order)) {
         return Promise.reject({status: 400, message: "Invalid input"})
@@ -25,8 +25,8 @@ function readArticles({ sort_by = "created_at", order = "DESC", topic}) {
 }
 
 function readArticlesById(id) {
-    return db.query(`Select author, title, article_id, body as article_body, topic, created_at, votes, article_img_url
-        from articles where article_id = $1`, [id])
+    return db.query(`Select articles.author, articles.title, articles.article_id, articles.body as article_body, articles.topic, articles.created_at, articles.votes, articles.article_img_url, count(comments.comment_id)::int as comment_count
+        from articles left join comments on comments.article_id = articles.article_id where articles.article_id = $1 GROUP BY articles.article_id;`, [id])
 }
 
 function updateArticleById(id, articleObj) {

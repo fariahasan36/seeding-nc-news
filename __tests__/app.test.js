@@ -143,15 +143,16 @@ describe("Get /api/users", ()=>{
 describe("Get /api/articles/:article_id", ()=>{
     test("200: Responds an object with the key of article and the value of an article object", () =>{
         return request(app)
-        .get("/api/articles/9")
+        .get("/api/articles/1")
         .expect(200)
         .then(({body})=>{
-            const { author, title, article_id, article_body, topic, created_at, votes, article_img_url } = body.article
+            const { author, title, article_id, article_body, topic, created_at, votes, article_img_url, comment_count } = body.article
             expect(typeof author).toBe("string")
             expect(typeof article_id).toBe("number")
             expect(typeof votes).toBe("number")
-            expect(article_id).toBe(9)
+            expect(article_id).toBe(1)
             expect(author).toBe("butter_bridge")
+            expect(comment_count).toBe(11)
         })
     })
    
@@ -166,7 +167,7 @@ describe("Get /api/articles/:article_id", ()=>{
     })
      test("400: Responds an error message with the error code 400 when id is not valid", () =>{
         return request(app)
-        .get("/api/articles/mnb")
+        .get("/api/articles/not-an-article-id")
         .expect(400)
         .then(({body})=>{
             const { message } = body
@@ -201,7 +202,7 @@ describe("Get /api/articles/:article_id/comments", ()=>{
     })
      test("400: Responds an error message with the error code 400 when article id is not valid", () =>{
         return request(app)
-        .get("/api/articles/mnb/comments")
+        .get("/api/articles/not-an-article-id/comments")
         .expect(400)
         .then(({body})=>{
             const { message } = body
@@ -248,7 +249,7 @@ describe("Post /api/articles/:article_id/comments", ()=>{
             body : "Add a comment"	
         }
         return request(app)
-        .post("/api/articles/abc/comments")
+        .post("/api/articles/not-an-article-id/comments")
         .send(comment)
         .expect(400)
         .then(({body})=>{
@@ -292,7 +293,7 @@ describe("Patch /api/articles/3", ()=>{
         const article = { inc_votes: 100 }
 
         return request(app)
-        .patch("/api/articles/abc")
+        .patch("/api/articles/not-an-article-id")
         .send(article)
         .expect(400)
         .then(({body})=>{
@@ -333,7 +334,7 @@ describe("Delete /api/comments/5", ()=>{
     })
     test("400: Responds a 400 when the given comment id is not valid", () =>{
         return request(app)
-        .delete("/api/comments/abcd")
+        .delete("/api/comments/not-a-comment-id")
         .expect(400)
         .then(({body})=>{
              const { message } = body

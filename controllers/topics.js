@@ -6,6 +6,10 @@ const getHello = (req, res) => {
 
 const getTopics = (req, res) => {    
     readTopics().then(({rows}) =>{
+
+        if(rows.length===0){
+          return Promise.reject({status: 404, message: "No Topics found"})
+        }
          res.status(200).send({topics: rows})
     })   
 }
