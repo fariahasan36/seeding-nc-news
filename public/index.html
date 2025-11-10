@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Northcoders</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer="true"></script>
+  </head>
+  <body>
+    <div id="container">
+      <header id="header">
+        <h1>Welcome to Northcoders News Server API Documentation</h1>
+        <p>
+          Here you can learn about differnt endpoints of Northcoders News Server
+          API, acceptable queries, the format of the request body, an example
+          response, any other information you think might be helpful
+        </p>
+      </header>
+      <nav id="menu">
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </nav>
+      <main id="main-section">
+        <section id="get-topics-api">
+          <h2>
+            <i><u>1. Get API: /api/topics </u></i>
+          </h2>
+          <h3>Description of the endpoint:</h3>
+          <p>From this api endpoint you can get a list of all the topics</p>
+          <h3>Acceptable queries:</h3>
+
+          <p>No queries are needed here.</p>
+          <h3>The format of the request body:</h3>
+          <p>No body is needed in this endpoint</p>
+          <h3>An example response:</h3>
+          <p>
+            The response will come in an object of a key 'topics' with a value
+            of an array of objects of all the topics. It is given below:
+          </p>
+          <pre id="get-topics"></pre>
+        </section>
+
+        <section id="get-articles-api">
+          <h2>
+            <i><u>2. Get API: /api/articles </u></i>
+          </h2>
+          <h3>Description of the endpoint:</h3>
+          <p>From this api endpoint you can get a list of all the articles</p>
+          <h3>Acceptable queries:</h3>
+          <ol>
+            <li>sort_by = "created_at" (optional)</li>
+            <li>order = "DESC" (optional)</li>
+            <li>topic = topic_name (optional)</li>
+          </ol>
+          <h3>The format of the request body:</h3>
+          <p>No body is needed in this endpoint</p>
+          <h3>An example response:</h3>
+          <p>
+            The response will come in an object of a key 'articles' with a value
+            of an array of objects of all the articles. It is given below:
+          </p>
+          <pre id="get-articles"></pre>
+        </section>
+
+        <section id="get-users-api">
+          <h2>
+            <i><u>3. Get API: /api/users </u></i>
+          </h2>
+          <h3>Description of the endpoint:</h3>
+          <p>From this api endpoint you can get a list of all the users</p>
+          <h3>Acceptable queries:</h3>
+          <p>No queries are needed here.</p>
+          <h3>The format of the request body:</h3>
+          <p>No body is needed in this endpoint</p>
+          <h3>An example response:</h3>
+          <p>
+            The response will come in an object of a key 'users' with a value of
+            an array of objects of all the users. It is given below:
+          </p>
+          <pre id="get-users"></pre>
+        </section>
+
+        <section id="get-article-by-id-api">
+          <h2>
+            <i><u>4. Get API: /api/articles/:article_id </u></i>
+          </h2>
+          <h3>Description of the endpoint:</h3>
+          <p>From this api endpoint you can get article by article id</p>
+          <h3>Acceptable queries:</h3>
+          <p>article_id (required)</p>
+          <h3>The format of the request body:</h3>
+          <p>No body is needed in this endpoint</p>
+          <h3>An example response:</h3>
+          <p>
+            The response will come in an object of a key 'article' with a value
+            of an objects of the article. It is given below:
+          </p>
+          <pre id="get-article-by-id"></pre>
+        </section>
+
+        <section>
+          <h2>
+            <i><u>5. Get API: /api/articles/:article_id/comments </u></i>
+          </h2>
+          <h3>Description of the endpoint:</h3>
+          <p>
+            From this api endpoint you can get a list of comments by article id
+          </p>
+          <h3>Acceptable queries:</h3>
+          <p>article_id (required)</p>
+          <h3>The format of the request body:</h3>
+          <p>No body is needed in this endpoint</p>
+          <h3>An example response:</h3>
+          <p>
+            The response will come in an object of a key 'article' with a value
+            of an objects of the article. It is given below:
+          </p>
+          <pre id="get-comments-by-article-id"></pre>
+        </section>
+        <section>
+          <h2>
+            <i><u>6. Post API: /api/articles/:article_id/comments </u></i>
+          </h2>
+          <h3>Description of the endpoint:</h3>
+          <p>From this api endpoint you can post a comments by article id</p>
+          <h3>Acceptable queries:</h3>
+          <p>article_id (required)</p>
+          <h3>The format of the request body:</h3>
+          <pre>
+ { "username" : "user_name",
+                    "body" : "text" }
+            </pre
+          >
+          <h3>An example response:</h3>
+          <p>
+            The response will come in an object of a key 'article' with a value
+            of an objects of the article. It is given below:
+          </p>
+          <pre id="post-comments-by-article-id"></pre>
+        </section>
+        <section>
+          <h2>
+            <i><u>7. Patch API: /api/articles/:article_id </u></i>
+          </h2>
+          <h3>Description of the endpoint:</h3>
+          <p>From this api endpoint you can update an article by article id</p>
+          <h3>Acceptable queries:</h3>
+          <p>article_id (required)</p>
+          <h3>The format of the request body:</h3>
+          <pre>
+                    { inc_votes: newVote }
+            </pre
+          >
+          <h3>An example response:</h3>
+          <p>
+            The response will come in an object of a key 'article' with a value
+            of an the updated object of the article. An example is given below:
+          </p>
+          <pre id="patch-article-by-article-id"></pre>
+        </section>
+        <section>
+          <h2>
+            <i><u>8. Delete API: /api/comments/:comment_id </u></i>
+          </h2>
+          <h3>Description of the endpoint:</h3>
+          <p>From this api endpoint you can delete a comment by comment id</p>
+          <h3>Acceptable queries:</h3>
+          <p>comment_id (required)</p>
+          <h3>The format of the request body:</h3>
+          <p>No body is needed in this endpoint</p>
+          <h3>An example response:</h3>
+          <p>
+            The response will come with no content but a status code 204 in it.
+          </p>
+        </section>
+      </main>
+    </div>
+    <footer id="footer">
+      <p>&copy; 2025 Northcoders News API. All rights reserved.</p>
+    </footer>
+  </body>
+</html>

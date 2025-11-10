@@ -1,0 +1,83 @@
+#container {
+  font-family: Arial, Helvetica, sans-serif;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  padding: 0rem 10rem;
+}
+body {
+}
+
+#header {
+  background: rgb(31, 26, 26);
+  color: white;
+  padding: 1rem 1rem;
+  text-align: center; /* centers text inside header */
+}
+
+#header h1 {
+  margin-bottom: 0.5rem;
+  font-size: 2rem;
+}
+
+#header p {
+  max-width: 800px;
+  margin: 0 auto;
+  font-size: 1.1rem;
+  line-height: 1.5;
+}
+#menu ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #3c3232;
+}
+
+#menu ul li {
+  float: left;
+}
+
+#menu ul li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+#menu ul li a:hover {
+  background-color: #111111;
+}
+#main-section * {
+  background-color: rgb(179, 167, 167);
+  color: black;
+}
+#main-section h2 {
+  padding: 2rem 4rem;
+}
+#main-section h3 {
+  padding: 0rem 4rem;
+}
+#main-section p {
+  padding: 0rem 4rem;
+}
+#main-section pre {
+  padding: 0rem 4rem 2rem 4rem;
+}
+#main-section ol {
+  padding: 0rem 6rem;
+}
+#main-section li {
+  /* padding: 0rem 4rem; */
+}
+#footer {
+  background: rgb(31, 26, 26);
+  color: white;
+  margin: 0 2rem;
+  text-align: center;
+  padding: 2rem 4rem;
+}
+#footer p {
+  margin: 0 auto;
+}
